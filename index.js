@@ -21,6 +21,6 @@ module.exports = exports = function(sqlite, callback) {
   }
 
   sqlite.loadExtension(extension_path, callback);
-  sqlite.run(`SELECT fts3_tokenizer("mozporter", mozporter())`);
+  sqlite.exec(`SELECT fts3_tokenizer("mozporter", mozporter())`);
   return sqlite;
 };

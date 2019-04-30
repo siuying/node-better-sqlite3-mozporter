@@ -1,49 +1,27 @@
-var sqlite3 = require('sqlite3')
-var db = new sqlite3.Database(':memory:')
+const Database = require('better-sqlite3')
+const db = new Database(':memory:')
 require('./')(db, function(e) {
   if (e) {
     console.log("error", e)
   }
 });
 
-db.serialize(function() {
-  db.run(`CREATE VIRTUAL TABLE documents USING fts4(title, content, tokenize=mozporter);`);
+db.exec(`CREATE VIRTUAL TABLE documents USING fts4(title, content, tokenize=mozporter);`);
+db.exec(`INSERT INTO documents VALUES('hello world', 'This message is a hello world message.');`);
+db.exec(`INSERT INTO documents VALUES('urgent: serious', 'This mail is seen as a more serious world mail');`);
+db.exec(`INSERT INTO documents VALUES('這是中文標題', '這是測試中文輸入');`);
 
-  db.run(`INSERT INTO documents VALUES('hello world', 'This message is a hello world message.');`);
-  db.run(`INSERT INTO documents VALUES('urgent: serious', 'This mail is seen as a more serious mail');`);
-  db.run(`INSERT INTO documents VALUES('這是中文標題', '這是測試中文輸入');`);
+const sql = "SELECT docid, rank(matchinfo(documents)) AS rank " +
+  "FROM documents " +
+  "WHERE documents MATCH ? " +
+  "ORDER BY rank DESC  " +
+  " LIMIT 10 OFFSET 0;"
+const statement = db.prepare(sql)
+let result = statement.all("message");
+console.log(result)
 
-  // Do stuff with the new rank UDF!
-  var sql = "SELECT docid, rank(matchinfo(documents)) AS rank " +
-    "FROM documents " +
-    "WHERE documents MATCH '\"message\"' " +
-    "ORDER BY rank DESC  " +
-    " LIMIT 10 OFFSET 0;"
+result = statement.all("world");
+console.log(result)
 
-  db.each(sql, function(err, row) {
-    if (err) {
-      console.log("error", err);
-      return
-    }
-
-    console.log("message:", row);
-  });
-
-  sql = "SELECT docid, rank(matchinfo(documents)) AS rank " +
-    "FROM documents " +
-    "WHERE documents MATCH '\"標題\"' " +
-    "ORDER BY rank DESC  " +
-    " LIMIT 10 OFFSET 0;"
-
-  db.each(sql, function(err, row) {
-    if (err) {
-      console.log("error", err);
-      return
-    }
-
-    console.log("標題:", row);
-  });
-});
-
-
-db.close();
+result = statement.all("標題");
+console.log(result)
