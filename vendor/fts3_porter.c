@@ -1148,7 +1148,7 @@ void sqlite3Fts3PorterTokenizerModule(
 }
 
 const sqlite3_tokenizer_module* sqlite3Fts3PorterTokenizerModuleInit() {
-  const static sqlite3_tokenizer_module* module;
+  static const sqlite3_tokenizer_module* module;
   sqlite3Fts3PorterTokenizerModule(&module);
   return module;
 }

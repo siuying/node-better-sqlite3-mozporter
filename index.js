@@ -20,7 +20,7 @@ module.exports = exports = function(sqlite, callback) {
     callback(new Error("Unable to find sqlite3-fts-cjk extension."));
   }
 
-  sqlite.loadExtension(extension_path, callback);
+  sqlite.loadExtension(extension_path);
   sqlite.exec(`SELECT fts3_tokenizer("mozporter", mozporter())`);
   return sqlite;
 };
