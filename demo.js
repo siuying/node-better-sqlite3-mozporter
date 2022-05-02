@@ -1,5 +1,5 @@
 const Database = require('better-sqlite3')
-const db = new Database(':memory:')
+const db = new Database('example.db')
 require('./')(db, function(e) {
   if (e) {
     console.log("error", e)
