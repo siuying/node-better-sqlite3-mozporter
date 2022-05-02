@@ -8,6 +8,9 @@
         "vendor/fts3_porter.c",
         "vendor/rank.m"
       ],
+      "libraries": [
+        "-lsqlite3", "-L'<!(pwd)'/node_modules/better-sqlite3/build/Release"
+      ],
       'cflags': [
         '-std=c99',
         '-Wno-unused-function',
