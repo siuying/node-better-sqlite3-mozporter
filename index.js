@@ -2,8 +2,8 @@
 
 var fs = require('fs');
 
-module.exports = exports = function(sqlite, callback) {
-  var base_path    = __dirname + '/build/Release/sqlite3-fts-cjk';
+module.exports = exports = function(sqlite, callback = () => {}) {
+  var base_path    = __dirname + '/build/Release/mozporter';
   var linux_path   = base_path + '.so';
   var osx_path     = base_path + '.dylib';
   var windows_path = base_path + '.dll';
@@ -17,7 +17,7 @@ module.exports = exports = function(sqlite, callback) {
   } else if (fs.existsSync(windows_path)) {
     extension_path = windows_path;
   } else {
-    callback(new Error("Unable to find sqlite3-fts-cjk extension."));
+    callback(new Error("Unable to find mozporter extension."));
   }
 
   sqlite.loadExtension(extension_path);

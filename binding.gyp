@@ -1,16 +1,14 @@
 {
   "targets": [
     {
-      "target_name": "sqlite3-fts-cjk",
+      "target_name": "mozporter",
       "type": "shared_library",
       "sources": [
         "vendor/Normalize.c",
         "vendor/fts3_porter.c",
         "vendor/rank.m"
       ],
-      "libraries": [
-        "-lsqlite3", "-L'<!(pwd)'/node_modules/better-sqlite3/build/Release"
-      ],
+      'dependencies': ["./node_modules/better-sqlite3/deps/sqlite3.gyp:sqlite3"],
       'cflags': [
         '-std=c99',
         '-Wno-unused-function',

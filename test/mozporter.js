@@ -5,7 +5,7 @@ const mozporter = require('../');
 describe('sqlite3', function() {
   describe('default stemmer', function(done) {
     it('should not index CJK character', function(done) {
-      const db = mozporter(new Database(':memory:'));
+      const db = mozporter(new Database(':memory:'), e => console.error);
       db.exec(`CREATE VIRTUAL TABLE documents USING fts4(id, title, content);`);
       db.exec(`INSERT INTO documents VALUES(1, 'hello world', 'This message is a hello world message.');`);
       db.exec(`INSERT INTO documents VALUES(2, 'urgent: serious', 'This mail is seen as a more serious mail');`);
