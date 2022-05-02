@@ -22,11 +22,13 @@ jobs:
           - 14
     name: Testing Node ${{ matrix.node }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    env:
+      CFLAGS: "-DSQLITE_ENABLE_FTS3_TOKENIZER"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-      - run: export CFLAGS="-DSQLITE_ENABLE_FTS3_TOKENIZER" npm install better-sqlite3 --build-from-source
+      - run: npm install better-sqlite3 --build-from-source
       - run: npm install
       - run: npm test
